@@ -8,7 +8,7 @@ from kitty.model.low_level.field import *
 from server_controller import SessionServerController
 
 target_ip = '127.0.0.1'
-target_port = 7300
+target_port = 9700
 web_port = 26001
 
 
