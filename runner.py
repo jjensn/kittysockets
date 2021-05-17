@@ -7,6 +7,8 @@ from kitty.model.low_level.aliases import *
 from kitty.model.low_level.field import *
 from server_controller import SessionServerController
 
+import sys
+
 target_ip = '127.0.0.1'
 target_port = 9700
 web_port = 26001
@@ -54,8 +56,14 @@ model.connect(get_session, send_data, new_session_callback)
 
 # Define fuzzer
 fuzzer = ServerFuzzer()
-fuzzer.set_interface(WebInterface(port=web_port))
+# fuzzer.set_interface(WebInterface(port=web_port))
 fuzzer.set_model(model)
 fuzzer.set_target(target)
 fuzzer.set_delay_between_tests(0.2)
-fuzzer.start()
+
+try:
+    fuzzer.start()
+except Exception as e:
+    sys.exit(e)
+
+sys.exit("Done!")
