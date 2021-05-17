@@ -1,0 +1,3 @@
+[submodule "katnip"]
+	path = katnip
+	url = https://github.com/cisco-sas/katnip.git
