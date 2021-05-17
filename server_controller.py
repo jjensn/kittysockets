@@ -88,7 +88,7 @@ class SessionServerController(BaseController):
             if self._server.returncode is None:
                 self._server.kill()
                 time.sleep(5.0)
-        self._server = subprocess.Popen('"C://Program Files (x86)//GeoComply//PlayerLocationCheck//Application//service.exe"') #, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self._server = subprocess.Popen(['"C://Program Files (x86)//GeoComply//PlayerLocationCheck//Application//service.exe"'], creationflags=0x00000008) #, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(5.0)
 
     def is_port_open(self):
