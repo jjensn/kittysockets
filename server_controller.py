@@ -110,7 +110,7 @@ class SessionServerController(BaseController):
 
     def is_process_running(self):
         for process in self._wmi.Win32_Process():
-            print(process.Name)
+            # print(process.Name)
             if process.Name == "service.exe":
                 return True
         

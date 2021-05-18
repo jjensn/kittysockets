@@ -4,7 +4,8 @@ import sys
 
 
 # from binascii import hexlify
-from katnip.targets.tcp import TcpTarget
+# from katnip.targets.tcp import TcpTarget
+from targets.websocket import WebsocketTarget
 from kitty.model import GraphModel, Template
 from kitty.interfaces import WebInterface
 from kitty.fuzzers import ServerFuzzer
@@ -19,7 +20,7 @@ target_port = 9700
 web_port = 26001
 
 # Define session target
-target = TcpTarget(
+target = WebsocketTarget(
     name="session_test_target", host=target_ip, port=target_port, timeout=2
 )
 # Make target expect response
@@ -46,9 +47,9 @@ fuzzer.set_model(model)
 fuzzer.set_target(target)
 fuzzer.set_delay_between_tests(0.2)
 
-try:
-    fuzzer.start()
-except Exception as e:
-    sys.exit(e)
+#try:
+fuzzer.start()
+# except Exception as e:
+#     sys.exit(e)
 
 sys.exit("Done!")
