@@ -50,10 +50,14 @@ class SessionServerController(BaseController):
     def setup(self):
         super(SessionServerController, self).setup()
         self.logger.info('starting target...')
-        self._restart_target()
+        # print(self.is_process_running())
+        # print(self.is_port_open())
+
+        if not self.is_victim_alive():
+            self._restart_target()
         if not self.is_victim_alive():
             msg = 'Controller cannot start target'
-            # raise Exception(msg)
+            raise Exception(msg)
 
     def teardown(self):
         super(SessionServerController, self).teardown()
@@ -77,7 +81,8 @@ class SessionServerController(BaseController):
                 self.report.failed("Target does not respond")
 
     def pre_test(self, test_number):
-        self._restart_target()
+        if not self.is_victim_alive():
+            self._restart_target()
         super(SessionServerController, self).pre_test(test_number)
 
     def _restart_target(self):
@@ -88,7 +93,7 @@ class SessionServerController(BaseController):
             if self._server.returncode is None:
                 self._server.kill()
                 time.sleep(5.0)
-        self._server = subprocess.Popen('"C://Program Files (x86)//GeoComply//PlayerLocationCheck//Application//service.exe"', creationflags=0x00000008) #, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self._server = subprocess.Popen('"C://Program Files (x86)//GeoComply//PlayerLocationCheck//Application//service.exe"') #, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(5.0)
 
     def is_port_open(self):
