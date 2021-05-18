@@ -1,7 +1,7 @@
 import base64
 import hashlib
 from Crypto import Random
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES 
 
 
 class AESCipher(object):
@@ -13,8 +13,6 @@ class AESCipher(object):
 
     def encrypt(self, raw):
         raw = self._pad(raw)
-        # AES.new()
-        # iv = Random.new().read(AES.block_size)
         cipher = AES.new(self.key, AES.MODE_CBC, self.iv)
         return base64.b64encode(cipher.encrypt(bytes(raw)))
 
