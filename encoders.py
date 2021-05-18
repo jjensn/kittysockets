@@ -32,6 +32,9 @@ class WebsocketBitsEncoder(BitsEncoder):
         # print("ENCODING " + str(type(frame)))
         return Bits(bytes=frame)
 
+class XMLEncrypt(StrEncoder):
 
+    def encode(self, value):
+          
 WEBSOCKET_TEXT = WebsocketTextEncoder()
 WEBSOCKET_BITS = WebsocketBitsEncoder()

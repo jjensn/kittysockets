@@ -112,7 +112,6 @@ class SessionServerController(BaseController):
         for process in self._wmi.Win32_Process():
             print(process.Name)
             if process.Name == "service.exe":
-                print("got it")
                 return True
         
         return False
