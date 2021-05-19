@@ -72,28 +72,23 @@ class WebsocketTarget(TcpTarget):
     #     '''
     #     return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def post_test(self, test_num):
-        '''
-        Called after a test is completed, perform cleanup etc.
-        '''
-        if self.socket is not None:
-            self.socket.close()
-            self.socket = None
-        super(TcpTarget, self).post_test(test_num)
+    # def post_test(self, test_num):
+    #     '''
+    #     Called after a test is completed, perform cleanup etc.
+    #     '''
+    #     if self.socket is not None:
+    #         self.socket.close()
+    #         self.socket = None
+    #     super(TcpTarget, self).post_test(test_num)
 
     def _send_to_target(self, data):
-        print("sending data")
+        #print("sending data")
         self.socket.send(data)
-        print("sent")
+        #print("sent")
         # 
 
 
     def _receive_from_target(self):
-        print("recv data")
-        data = self.socket.recv(10000)
-        print(data)
-        return data
-
         try:
             return self.socket.recv(10000)
         except socket.timeout:
