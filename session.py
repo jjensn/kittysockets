@@ -66,6 +66,7 @@ class SessionManager:
 
     def start(self):
         #thread.start_new_thread(self.shim, ())
-        self.shim()
+        t=threading.Thread(target=self.shim)
+        t.start()
         #_thread = threading.Thread(target=self.shim)
         #_thread.start()
