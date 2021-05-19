@@ -4,12 +4,15 @@ import os
 from kitty.model.low_level.aliases import *
 from kitty.model.low_level.field import *
 from kitty.model.low_level.container import *
-
+from katnip.model.low_level.radamsa import RadamsaField
 from encoders import *
+import random
 
 class BaseCommand:
 
     def __init__(self, model):
+        self._radamsa_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..\\utils\\radamsa.exe')
+
         self._init_websocket = Template(
             name="init_websocket",
             fields=[
@@ -42,17 +45,32 @@ class BaseCommand:
             ],
         )
 
+        self._ping = Template(
+            name="websocket_ping",
+            fields=[
+                RadamsaField(value=b'\x81\x8c\xff\xb8\xbd\xf3\xa0\x80\xaf\xbd\t\xb7\xdd\xd1\xd1\x90\x98\xea\xd2\x8d\xd4\xd9\x9c', fuzz_count=1, bin_path=self._radamsa_path), #, seed=random.randint(1, 100000)),
+
+                # OneOf(fields=[
+                #     # String(
+                #     #     name="ping",
+                #     #     value='{}'
+                #     # ),
+                #     RadamsaField(value=b'\x81\x8c\xff\xb8\xbd\xf3\xa0\x80\xaf\xbd\t\xb7\xdd\xd1\xd1\x90\x98\xea\xd2\x8d\xd4\xd9\x9c', fuzz_count=5000, bin_path=self._radamsa_path),
+                # ])
+            ],encoder=WEBSOCKET_PING
+        )
+
         self._model = model
 
-        dn = os.path.dirname(os.path.realpath(__file__))
-        print(dn)
-        os._exit()
-        # self._radamsa_path = ""
+        
 
         self._model.connect(self._init_websocket)
         self._model.connect(self._init_websocket, self._init_handshake)
+        self._model.connect(self._init_handshake, self._ping, self.new_session_callback)
+        # self._model.connect(self._ping)
+        # self._model.connect(self._init_handshake, self._ping, self.new_session_callback)
 
-    def new_session_callback(fuzzer, edge, resp):
+    def new_session_callback(self, fuzzer, edge, resp):
         """
         :param fuzzer: the fuzzer object
         :param edge: the edge in the graph we currently at.
@@ -60,13 +78,16 @@ class BaseCommand:
                     edge.dst is the send_data template
         :param resp: the response from the target
         """
-        msg = resp[resp.find(b"{") :]
-        resp = json.loads(msg.decode())
-        if "handshake_resp" in resp:
-            handshake_resp = resp["handshake_resp"]
-            if "session" in handshake_resp:
-                fuzzer.logger.info("session is: %s" % handshake_resp["session"])
-                fuzzer.target.session_data["session_id"] = handshake_resp["session"]
+        if resp and resp.find(b"{") > -1:
+            msg = resp[resp.find(b"{") :]
+            resp = json.loads(msg.decode())
+            if "handshake_resp" in resp:
+                handshake_resp = resp["handshake_resp"]
+                if "session" in handshake_resp:
+                    fuzzer.logger.info("session is: %s" % handshake_resp["session"])
+                    fuzzer.target.session_data["session_id"] = handshake_resp["session"]
+        else:
+            fuzzer.target.session_data["session_id"] = b'\x41\x41\x41\x41'
 
 
 
