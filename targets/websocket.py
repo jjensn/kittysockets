@@ -83,9 +83,9 @@ class WebsocketTarget(TcpTarget):
 
     def _send_to_target(self, data):
         print("sending data")
-        super(TcpTarget, self)._send_to_target(data)
+        self.socket.send(data)
         print("sent")
-        # self.socket.send(data)
+        # 
 
 
     def _receive_from_target(self):
@@ -93,7 +93,7 @@ class WebsocketTarget(TcpTarget):
         data = self.socket.recv(10000)
         print(data)
         return data
-        
+
         try:
             return self.socket.recv(10000)
         except socket.timeout:
