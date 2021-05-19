@@ -16,8 +16,8 @@
 # along with Katnip.  If not, see <http://www.gnu.org/licenses/>.
 
 import socket
-import time
-import traceback
+# import time
+# import traceback
 from katnip.targets.tcp import TcpTarget
 
 

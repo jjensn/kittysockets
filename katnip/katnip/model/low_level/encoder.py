@@ -25,7 +25,11 @@ External dependencies that are not installed by default:
 pycrypto
 '''
 
-from Crypto.Cipher import AES, DES, DES3
+try:
+    from Crypto.Cipher import AES, DES, DES3
+except ImportError:
+    from Cryptodome.Cipher import AES, DES, DES3
+  
 from bitstring import Bits
 from kitty.model.low_level.encoder import StrEncoder
 from kitty.core import KittyException

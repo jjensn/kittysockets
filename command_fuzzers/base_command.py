@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 from kitty.model.low_level.aliases import *
 from kitty.model.low_level.field import *
@@ -11,7 +12,10 @@ import random
 class BaseCommand:
 
     def __init__(self, model):
-        self._radamsa_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..\\utils\\radamsa.exe')
+        if sys.platform == 'darwin':
+            self._radamsa_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../utils/radamsa-osx')
+        elif sys.platform == 'win32':
+            self._radamsa_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..\\utils\\radamsa.exe')
 
         self._init_websocket = Template(
             name="init_websocket",
@@ -48,27 +52,15 @@ class BaseCommand:
         self._ping = Template(
             name="websocket_ping",
             fields=[
-                RadamsaField(value=b'\x81\x8c\xff\xb8\xbd\xf3\xa0\x80\xaf\xbd\t\xb7\xdd\xd1\xd1\x90\x98\xea\xd2\x8d\xd4\xd9\x9c', fuzz_count=1, bin_path=self._radamsa_path), #, seed=random.randint(1, 100000)),
-
-                # OneOf(fields=[
-                #     # String(
-                #     #     name="ping",
-                #     #     value='{}'
-                #     # ),
-                #     RadamsaField(value=b'\x81\x8c\xff\xb8\xbd\xf3\xa0\x80\xaf\xbd\t\xb7\xdd\xd1\xd1\x90\x98\xea\xd2\x8d\xd4\xd9\x9c', fuzz_count=5000, bin_path=self._radamsa_path),
-                # ])
+                Static(value='PING')
             ],encoder=WEBSOCKET_PING
         )
 
         self._model = model
 
-        
-
         self._model.connect(self._init_websocket)
         self._model.connect(self._init_websocket, self._init_handshake)
         self._model.connect(self._init_handshake, self._ping, self.new_session_callback)
-        # self._model.connect(self._ping)
-        # self._model.connect(self._init_handshake, self._ping, self.new_session_callback)
 
     def new_session_callback(self, fuzzer, edge, resp):
         """
@@ -87,7 +79,7 @@ class BaseCommand:
                     fuzzer.logger.info("session is: %s" % handshake_resp["session"])
                     fuzzer.target.session_data["session_id"] = handshake_resp["session"]
         else:
-            fuzzer.target.session_data["session_id"] = b'\x41\x41\x41\x41'
+            fuzzer.target.session_data["session_id"] = "160c2e63-ad3c-444f-8da7-136698f25ff1"
 
 
 
