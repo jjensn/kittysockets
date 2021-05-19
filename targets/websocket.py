@@ -72,14 +72,14 @@ class WebsocketTarget(TcpTarget):
     #     '''
     #     return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # def post_test(self, test_num):
-    #     '''
-    #     Called after a test is completed, perform cleanup etc.
-    #     '''
-    #     if self.socket is not None:
-    #         self.socket.close()
-    #         self.socket = None
-    #     super(TcpTarget, self).post_test(test_num)
+    def post_test(self, test_num):
+        '''
+        Called after a test is completed, perform cleanup etc.
+        '''
+        if self.socket is not None:
+            self.socket.close()
+            self.socket = None
+        super(TcpTarget, self).post_test(test_num)
 
     def _send_to_target(self, data):
         print("sending data")

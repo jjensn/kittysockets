@@ -51,7 +51,7 @@ fuzzer.set_interface(WebInterface(port=web_port))
 fuzzer.set_model(model)
 fuzzer.set_target(target)
 fuzzer.set_delay_between_tests(0.2)
-fuzzer.target.session_data["session_id"] = session_mgr._session_id
+# fuzzer.target.session_data["session_id"] = session_mgr._session_id
 
 fuzzer.start()
 
