@@ -2,7 +2,7 @@
 from command_fuzzers.user_id import SetUserID
 from session import SessionManager
 
-
+import time
 # from binascii import hexlify
 # from katnip.targets.tcp import TcpTarget
 from targets.websocket import WebsocketTarget
@@ -29,6 +29,9 @@ target.set_expect_response(True)
 session_mgr = SessionManager(target_ip, target_port)
 session_mgr.start()
 
+while not session_mgr._session_id:
+  time.sleep(1)
+  
 print("hopefully i get here")
 # Define controller
 controller = SessionServerController(
