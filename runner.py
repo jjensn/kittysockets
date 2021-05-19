@@ -27,7 +27,7 @@ target = WebsocketTarget(
 target.set_expect_response(True)
 
 session_mgr = SessionManager(target_ip, target_port)
-session_mgr.create_session()
+session_mgr.start()
 
 # Define controller
 controller = SessionServerController(
