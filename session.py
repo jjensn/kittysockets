@@ -23,7 +23,7 @@ class SessionManager:
           while self._session_id:
               print("pinging")
               await asyncio.sleep(10)
-              await websocket.ping(str(uuid.uuid4()))
+              await websocket.send('2')
                 
 
     def shim(self):
