@@ -20,10 +20,7 @@ class SessionManager:
           session = json.loads(resp)
           self._session_id = session['handshake_resp']['session']
           print(self._session_id)
-          while self._session_id:
-              print("pinging")
-              await asyncio.sleep(10)
-              await websocket.send('2')
+          websocket.run_forever(ping_interval=10, ping_timeout=10)
                 
 
     def shim(self):
