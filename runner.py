@@ -22,16 +22,9 @@ web_port = 26001
 
 # Make target expect response
 
-
-session_mgr = SessionManager(target_ip, target_port)
-session_mgr.start()
-
-while not session_mgr._session_id:
-  time.sleep(1)
-
 # Define session target
 target = WebsocketTarget(
-    name="session_test_target", host=target_ip, port=target_port, timeout=2, session_mgr=session_mgr
+    name="session_test_target", host=target_ip, port=target_port, timeout=2
 )
 target.set_expect_response(True)
 # Define controller
@@ -48,7 +41,11 @@ cmdfuzz.finalize()
 # model.connect(init_websocket)
 # model.connect(init_websocket, init_handshake)
 # model.connect(init_handshake, user_id_fuzz, new_session_callback)
+session_mgr = SessionManager(target_ip, target_port)
+session_mgr.start()
 
+while not session_mgr._session_id:
+  time.sleep(1)
 # Define fuzzer
 fuzzer = ServerFuzzer()
 fuzzer.set_interface(WebInterface(port=web_port))
