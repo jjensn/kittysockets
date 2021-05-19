@@ -88,12 +88,11 @@ class WebsocketTarget(TcpTarget):
         # self.socket.send(data)
 
     def _receive_from_target(self):
-        pass
-        # try:
-        #     return self.socket.recv(10000)
-        # except socket.timeout:
-        #     self.socket.shutdown(socket.SHUT_RDWR)
-        #     self.socket = None
-        #     return b'\x00'
-        # except Exception as e:
-        #     raise(e)
+        try:
+            return self.socket.recv(10000)
+        except socket.timeout:
+            self.socket.shutdown(socket.SHUT_RDWR)
+            self.socket = None
+            return b'\x00'
+        except Exception as e:
+            raise(e)
