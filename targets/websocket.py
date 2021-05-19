@@ -82,14 +82,18 @@ class WebsocketTarget(TcpTarget):
     #     super(TcpTarget, self).post_test(test_num)
 
     def _send_to_target(self, data):
-        if not self.socket:
-            sock = self._get_socket()
-            sock.connect((self.host, self.port))
-            self.socket = sock
-        # self.sesion_mgr._ws.send(data)
-        self.socket.send(data)
+        print("sending data")
+        super(TcpTarget, self)._send_to_target(data)
+        print("sent")
+        # self.socket.send(data)
+
 
     def _receive_from_target(self):
+        print("recv data")
+        data = self.socket.recv(10000)
+        print(data)
+        return data
+        
         try:
             return self.socket.recv(10000)
         except socket.timeout:
