@@ -55,6 +55,6 @@ class SetUserID(BaseCommand):
             ]
         )
     def finalize(self):
-        #self._model.connect(self._ping, self._target_template)
-        self._model.connect(self._init_websocket, self._target_template)
+        self._model.connect(self._ping, self._target_template)
+        #self._model.connect(self._init_websocket, self._target_template)
 

@@ -22,18 +22,18 @@ web_port = 26001
 session_mgr = SessionManager(target_ip, target_port)
 # Make target expect response
 
-def set_var(fuzzer, edge, resp):
-  fuzzer.target.session_data["session_id"] = session_mgr._session_id
+# def set_var(fuzzer, edge, resp):
+  # fuzzer.target.session_data["session_id"] = session_mgr._session_id
   #print("SET SESSION ID!! %s" % session_mgr._session_id)
   #sys.exit("DONE")
 
 # Define model
 model = GraphModel()
 cmdfuzz = SetUserID(model)
-#cmdfuzz.case_1()
-#cmdfuzz.finalize()
-model.connect(cmdfuzz._init_websocket)
-model.connect(cmdfuzz._init_websocket, cmdfuzz._target_template, set_var)
+cmdfuzz.case_1()
+cmdfuzz.finalize()
+#model.connect(cmdfuzz._init_websocket)
+#model.connect(cmdfuzz._init_websocket, cmdfuzz._target_template, set_var)
 # model.connect(init_handshake, user_id_fuzz, new_session_callback)
 
 
