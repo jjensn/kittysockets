@@ -28,7 +28,7 @@ class SessionManager:
 
           self._ws.on_open = self.on_open
 
-          self._ws.run_forever(ping_interval=10, ping_timeout=10)
+          self._ws.run_forever(ping_interval=15, ping_timeout=10)
 
     def on_message(self, message):
         print(message)
