@@ -31,8 +31,7 @@ session_mgr.start()
 
 while not session_mgr._session_id:
   time.sleep(1)
-  
-print("hopefully i get here")
+
 # Define controller
 controller = SessionServerController(
     name="ServerController", host=target_ip, port=target_port
@@ -40,20 +39,21 @@ controller = SessionServerController(
 target.set_controller(controller)
 
 # Define model
-# model = GraphModel()
-# cmdfuzz = SetUserID(model)
-# cmdfuzz.case_1()
-# cmdfuzz.finalize()
+model = GraphModel()
+cmdfuzz = SetUserID(model)
+cmdfuzz.case_1()
+cmdfuzz.finalize()
 # model.connect(init_websocket)
 # model.connect(init_websocket, init_handshake)
 # model.connect(init_handshake, user_id_fuzz, new_session_callback)
 
 # Define fuzzer
-# fuzzer = ServerFuzzer()
-# fuzzer.set_interface(WebInterface(port=web_port))
-# fuzzer.set_model(model)
-# fuzzer.set_target(target)
-# fuzzer.set_delay_between_tests(0.2)
+fuzzer = ServerFuzzer()
+fuzzer.set_interface(WebInterface(port=web_port))
+fuzzer.set_model(model)
+fuzzer.set_target(target)
+fuzzer.set_delay_between_tests(0.2)
+fuzzer.target.session_data["session_id"] = session_mgr._session_id
 
-# fuzzer.start()
+fuzzer.start()
 
