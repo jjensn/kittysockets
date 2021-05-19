@@ -19,12 +19,9 @@ target_ip = "127.0.0.1"
 target_port = 9700
 web_port = 26001
 
-# Define session target
-target = WebsocketTarget(
-    name="session_test_target", host=target_ip, port=target_port, timeout=2
-)
+
 # Make target expect response
-target.set_expect_response(True)
+
 
 session_mgr = SessionManager(target_ip, target_port)
 session_mgr.start()
@@ -32,6 +29,11 @@ session_mgr.start()
 while not session_mgr._session_id:
   time.sleep(1)
 
+# Define session target
+target = WebsocketTarget(
+    name="session_test_target", host=target_ip, port=target_port, timeout=2, session_mgr=session_mgr
+)
+target.set_expect_response(True)
 # Define controller
 controller = SessionServerController(
     name="ServerController", host=target_ip, port=target_port

@@ -26,23 +26,24 @@ class WebsocketTarget(TcpTarget):
     TcpTarget is implementation of a TCP target for the ServerFuzzer
     '''
 
-    # def __init__(self, name, host, port, max_retries=10, timeout=None, logger=None):
-    #     '''
-    #     :param name: name of the target
-    #     :param host: host ip (to send data to) currently unused
-    #     :param port: port to send to
-    #     :param max_retries: maximum connection retries (default: 10)
-    #     :param timeout: socket timeout (default: None)
-    #     :param logger: logger for the object (default: None)
-    #     '''
-    #     super(TcpTarget, self).__init__(name, logger)
-    #     self.host = host
-    #     self.port = port
-    #     if (host is None) or (port is None):
-    #         raise ValueError('host and port may not be None')
-    #     self.timeout = timeout
-    #     self.socket = None
-    #     self.max_retries = max_retries
+    def __init__(self, name, host, port, max_retries=10, timeout=None, logger=None, session_mgr=None):
+        '''
+        :param name: name of the target
+        :param host: host ip (to send data to) currently unused
+        :param port: port to send to
+        :param max_retries: maximum connection retries (default: 10)
+        :param timeout: socket timeout (default: None)
+        :param logger: logger for the object (default: None)
+        '''
+        super(TcpTarget, self).__init__(name, logger)
+        self.host = host
+        self.port = port
+        if (host is None) or (port is None):
+            raise ValueError('host and port may not be None')
+        self.timeout = timeout
+        self.socket = None
+        self.max_retries = max_retries
+        self.sesion_mgr = session_mgr
 
     # def pre_test(self, test_num):
     #     super(TcpTarget, self).pre_test(test_num)
@@ -79,18 +80,20 @@ class WebsocketTarget(TcpTarget):
     #     super(TcpTarget, self).post_test(test_num)
 
     def _send_to_target(self, data):
-        if not self.socket:
-            sock = self._get_socket()
-            sock.connect((self.host, self.port))
-            self.socket = sock
-        self.socket.send(data)
+        # if not self.socket:
+        #     sock = self._get_socket()
+        #     sock.connect((self.host, self.port))
+        #     self.socket = sock
+        self.sesion_mgr._ws.send(data)
+        # self.socket.send(data)
 
     def _receive_from_target(self):
-        try:
-            return self.socket.recv(10000)
-        except socket.timeout:
-            self.socket.shutdown(socket.SHUT_RDWR)
-            self.socket = None
-            return b'\x00'
+        pass
+        # try:
+        #     return self.socket.recv(10000)
+        # except socket.timeout:
+        #     self.socket.shutdown(socket.SHUT_RDWR)
+        #     self.socket = None
+        #     return b'\x00'
         # except Exception as e:
         #     raise(e)
