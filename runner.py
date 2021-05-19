@@ -2,7 +2,7 @@
 from command_fuzzers.user_id import SetUserID
 from session import SessionManager
 
-import time
+import sys
 # from binascii import hexlify
 # from katnip.targets.tcp import TcpTarget
 from targets.websocket import WebsocketTarget
@@ -19,9 +19,12 @@ target_ip = "127.0.0.1"
 target_port = 9700
 web_port = 26001
 
-
+session_mgr = SessionManager(target_ip, target_port)
 # Make target expect response
-
+def set_var(fuzzer, edge, resp):
+  fuzzer.target.session_data["session_id"] = session_mgr._session_id
+  print("SET SESSION ID!! %s" % session_mgr._session_id)
+  sys.exit("DONE")
 
 
 # Define model
@@ -30,9 +33,9 @@ cmdfuzz = SetUserID(model)
 #cmdfuzz.case_1()
 #cmdfuzz.finalize()
 model.connect(cmdfuzz._init_websocket)
-model.connect(cmdfuzz._init_websocket, cmdfuzz._target_template)
+model.connect(cmdfuzz._init_websocket, cmdfuzz._target_template, set_var)
 # model.connect(init_handshake, user_id_fuzz, new_session_callback)
-session_mgr = SessionManager(target_ip, target_port)
+
 
 # Define session target
 target = WebsocketTarget(
@@ -51,7 +54,6 @@ fuzzer.set_interface(WebInterface(port=web_port))
 fuzzer.set_model(model)
 fuzzer.set_target(target)
 fuzzer.set_delay_between_tests(0.2)
-# fuzzer.target.session_data["session_id"] = session_mgr._session_id
 
 fuzzer.start()
 
