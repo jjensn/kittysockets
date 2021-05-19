@@ -36,17 +36,14 @@ session_mgr = SessionManager(target_ip, target_port)
 
 # Define session target
 target = WebsocketTarget(
-    name="session_test_target", host=target_ip, port=target_port, timeout=2, session_mgr=session_mgr
+    name="session_test_target", host=target_ip, port=target_port, timeout=2
 )
 target.set_expect_response(True)
 # Define controller
 controller = SessionServerController(
-    name="ServerController", host=target_ip, port=target_port
+    name="ServerController", host=target_ip, port=target_port, session_mgr=session_mgr
 )
 target.set_controller(controller)
-
-while not session_mgr._session_id:
-  time.sleep(1)
 
 # Define fuzzer
 fuzzer = ServerFuzzer()

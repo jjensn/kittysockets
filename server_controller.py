@@ -29,7 +29,7 @@ class SessionServerController(BaseController):
     This controller controls our SessionServer.
     '''
 
-    def __init__(self, name, host, port, logger=None):
+    def __init__(self, name, host, port, logger=None, session_mgr=None):
         '''
         :param name: name of the object
         :param host: Listen address for target
@@ -46,6 +46,7 @@ class SessionServerController(BaseController):
         self._server = None
         self._active = False
         self._wmi = wmi.WMI()
+        self._session_mgr = session_mgr
 
     def setup(self):
         super(SessionServerController, self).setup()
@@ -55,6 +56,10 @@ class SessionServerController(BaseController):
 
         if not self.is_victim_alive():
             self._restart_target()
+            self._session_mgr.start()
+            while not self._session_mgr._session_id:
+                time.sleep(1)
+                print("Waiting to get a session ID")
         if not self.is_victim_alive():
             msg = 'Controller cannot start target'
             raise Exception(msg)

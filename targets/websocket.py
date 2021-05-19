@@ -16,7 +16,7 @@
 # along with Katnip.  If not, see <http://www.gnu.org/licenses/>.
 
 import socket
-# import time
+import time
 # import traceback
 from katnip.targets.tcp import TcpTarget
 
@@ -26,44 +26,45 @@ class WebsocketTarget(TcpTarget):
     TcpTarget is implementation of a TCP target for the ServerFuzzer
     '''
 
-    def __init__(self, name, host, port, max_retries=10, timeout=None, logger=None, session_mgr=None):
-        '''
-        :param name: name of the target
-        :param host: host ip (to send data to) currently unused
-        :param port: port to send to
-        :param max_retries: maximum connection retries (default: 10)
-        :param timeout: socket timeout (default: None)
-        :param logger: logger for the object (default: None)
-        '''
-        super(TcpTarget, self).__init__(name, logger)
-        self.host = host
-        self.port = port
-        if (host is None) or (port is None):
-            raise ValueError('host and port may not be None')
-        self.timeout = timeout
-        self.socket = None
-        self.max_retries = max_retries
-        self.sesion_mgr = session_mgr
+    # def __init__(self, name, host, port, max_retries=10, timeout=None, logger=None, session_mgr=None):
+    #     '''
+    #     :param name: name of the target
+    #     :param host: host ip (to send data to) currently unused
+    #     :param port: port to send to
+    #     :param max_retries: maximum connection retries (default: 10)
+    #     :param timeout: socket timeout (default: None)
+    #     :param logger: logger for the object (default: None)
+    #     '''
+    #     super(TcpTarget, self).__init__(name, logger)
+    #     self.host = host
+    #     self.port = port
+    #     if (host is None) or (port is None):
+    #         raise ValueError('host and port may not be None')
+    #     self.timeout = timeout
+    #     self.socket = None
+    #     self.max_retries = max_retries
+    #     self.sesion_mgr = session_mgr
 
-    def pre_test(self, test_num):
-        self.session_mgr.start()
-        super(TcpTarget, self).pre_test(test_num)
-        retry_count = 0
-        while self.socket is None and retry_count < self.max_retries:
-            sock = self._get_socket()
-            if self.timeout is not None:
-                sock.settimeout(self.timeout)
-            try:
-                retry_count += 1
-                sock.connect((self.host, self.port))
-                self.socket = sock
-            except Exception:
-                sock.close()
-                self.logger.error('Error: %s' % traceback.format_exc())
-                self.logger.error('Failed to connect to target server, retrying...')
-                time.sleep(1)
-        if self.socket is None:
-            raise(KittyException('TCPTarget: (pre_test) cannot connect to server (retries = %d' % retry_count))
+    # def pre_test(self, test_num):
+        
+    #     super(TcpTarget, self).pre_test(test_num)
+        
+    #     retry_count = 0
+    #     while self.socket is None and retry_count < self.max_retries:
+    #         sock = self._get_socket()
+    #         if self.timeout is not None:
+    #             sock.settimeout(self.timeout)
+    #         try:
+    #             retry_count += 1
+    #             sock.connect((self.host, self.port))
+    #             self.socket = sock
+    #         except Exception:
+    #             sock.close()
+    #             self.logger.error('Error: %s' % traceback.format_exc())
+    #             self.logger.error('Failed to connect to target server, retrying...')
+    #             time.sleep(1)
+    #     if self.socket is None:
+    #         raise(KittyException('TCPTarget: (pre_test) cannot connect to server (retries = %d' % retry_count))
 
     # def _get_socket(self):
     #     '''
