@@ -17,7 +17,7 @@ class SessionManager:
       async with websockets.connect("ws://%s:%i" % (self._ip, self._port)) as websocket:
           await websocket.send('{"handshake_req":{"version":"3.1.1.3","browser":"Firefox 88.0","js_lib_version":"3.1.1.3","installer_key":"qSytHg7BcJ","env":"production"}}')
           resp = await websocket.recv()
-          session = json.load(resp)
+          session = json.loads(resp)
           self._session_id = session['handshake_resp']['session']
           print(self._session_id)
           while self._session_id:
