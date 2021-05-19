@@ -1,0 +1,5 @@
+*.pyc
+*/kittylogs/
+unit_tests/logs/
+katnip.egg-info/
+docs/build
