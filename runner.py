@@ -29,6 +29,7 @@ target.set_expect_response(True)
 session_mgr = SessionManager(target_ip, target_port)
 session_mgr.start()
 
+print("hopefully i get here")
 # Define controller
 controller = SessionServerController(
     name="ServerController", host=target_ip, port=target_port
