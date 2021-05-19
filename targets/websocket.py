@@ -80,12 +80,12 @@ class WebsocketTarget(TcpTarget):
     #     super(TcpTarget, self).post_test(test_num)
 
     def _send_to_target(self, data):
-        # if not self.socket:
-        #     sock = self._get_socket()
-        #     sock.connect((self.host, self.port))
-        #     self.socket = sock
-        self.sesion_mgr._ws.send(data)
-        # self.socket.send(data)
+        if not self.socket:
+            sock = self._get_socket()
+            sock.connect((self.host, self.port))
+            self.socket = sock
+        # self.sesion_mgr._ws.send(data)
+        self.socket.send(data)
 
     def _receive_from_target(self):
         try:
