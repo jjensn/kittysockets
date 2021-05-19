@@ -22,7 +22,7 @@ class SetUserID(BaseCommand):
             name="set_user_id",
             fields=[
                 String(value='{"execute_command":{"session":"', fuzzable=False),
-                Dynamic(key="session_id", default_value=""),
+                Dynamic(key="session_id", default_value="AAAA"),
                 String(
                     value='","command":"SET_USER_ID", "params":["user_id"],"values":[',
                     fuzzable=False,
