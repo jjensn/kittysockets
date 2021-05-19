@@ -45,24 +45,25 @@ class WebsocketTarget(TcpTarget):
         self.max_retries = max_retries
         self.sesion_mgr = session_mgr
 
-    # def pre_test(self, test_num):
-    #     super(TcpTarget, self).pre_test(test_num)
-    #     retry_count = 0
-    #     while self.socket is None and retry_count < self.max_retries:
-    #         sock = self._get_socket()
-    #         if self.timeout is not None:
-    #             sock.settimeout(self.timeout)
-    #         try:
-    #             retry_count += 1
-    #             sock.connect((self.host, self.port))
-    #             self.socket = sock
-    #         except Exception:
-    #             sock.close()
-    #             self.logger.error('Error: %s' % traceback.format_exc())
-    #             self.logger.error('Failed to connect to target server, retrying...')
-    #             time.sleep(1)
-    #     if self.socket is None:
-    #         raise(KittyException('TCPTarget: (pre_test) cannot connect to server (retries = %d' % retry_count))
+    def pre_test(self, test_num):
+        self.session_mgr.start()
+        super(TcpTarget, self).pre_test(test_num)
+        retry_count = 0
+        while self.socket is None and retry_count < self.max_retries:
+            sock = self._get_socket()
+            if self.timeout is not None:
+                sock.settimeout(self.timeout)
+            try:
+                retry_count += 1
+                sock.connect((self.host, self.port))
+                self.socket = sock
+            except Exception:
+                sock.close()
+                self.logger.error('Error: %s' % traceback.format_exc())
+                self.logger.error('Failed to connect to target server, retrying...')
+                time.sleep(1)
+        if self.socket is None:
+            raise(KittyException('TCPTarget: (pre_test) cannot connect to server (retries = %d' % retry_count))
 
     # def _get_socket(self):
     #     '''
