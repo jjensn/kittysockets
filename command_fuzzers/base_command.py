@@ -17,8 +17,8 @@ class BaseCommand:
         elif sys.platform == 'win32':
             self._radamsa_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..\\utils\\radamsa.exe')
 
-        print(self._radamsa_path)
-        sys.exit("hey")
+        #print(self._radamsa_path)
+        #sys.exit("hey")
         self._init_websocket = Template(
             name="init_websocket",
             fields=[
