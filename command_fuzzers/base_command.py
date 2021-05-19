@@ -59,8 +59,8 @@ class BaseCommand:
         self._model = model
 
         self._model.connect(self._init_websocket)
-        self._model.connect(self._init_websocket, self._init_handshake)
-        self._model.connect(self._init_handshake, self._ping, self.new_session_callback)
+        # self._model.connect(self._init_websocket, self._init_handshake)
+        # self._model.connect(self._init_handshake, self._ping, self.new_session_callback)
 
     def new_session_callback(self, fuzzer, edge, resp):
         """
