@@ -27,10 +27,10 @@ web_port = 26001
 # Define model
 model = GraphModel()
 cmdfuzz = SetUserID(model)
-cmdfuzz.case_1()
-cmdfuzz.finalize()
-# model.connect(init_websocket)
-# model.connect(init_websocket, init_handshake)
+#cmdfuzz.case_1()
+#cmdfuzz.finalize()
+model.connect(cmdfuzz._init_websocket)
+model.connect(cmdfuzz._init_websocket, cmdfuzz._target_template)
 # model.connect(init_handshake, user_id_fuzz, new_session_callback)
 session_mgr = SessionManager(target_ip, target_port)
 

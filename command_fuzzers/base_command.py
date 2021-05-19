@@ -17,6 +17,8 @@ class BaseCommand:
         elif sys.platform == 'win32':
             self._radamsa_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..\\utils\\radamsa.exe')
 
+        print(self._radamsa_path)
+        sys._exit("hey")
         self._init_websocket = Template(
             name="init_websocket",
             fields=[
@@ -58,7 +60,7 @@ class BaseCommand:
 
         self._model = model
 
-        self._model.connect(self._init_websocket)
+        # self._model.connect(self._init_websocket)
         # self._model.connect(self._init_websocket, self._init_handshake)
         # self._model.connect(self._init_handshake, self._ping, self.new_session_callback)
 
