@@ -28,7 +28,7 @@ class SessionManager:
       #         await asyncio.sleep(10)
       #         await websocket.send('2')
           self._ws = websocket.WebSocketApp("ws://%s:%i" % (self._ip, self._port), on_open=self.on_open, on_message = self.on_message, on_error = self.on_error, on_close = self.on_close)
-
+          print("About to run forever")
           self._ws.run_forever(ping_interval=15, ping_timeout=10)
 
     def on_message(self, ws, message):
@@ -51,6 +51,7 @@ class SessionManager:
         thread.start_new_thread(run, ())
         
     def shim(self):
+        print("in shim")
         while True:
             if not self._session_id or not self._ws.sock.connected:
                 self.create_session()
@@ -64,5 +65,6 @@ class SessionManager:
         # loop.close()
 
     def start(self):
-        _thread = threading.Thread(target=self.shim)
-        _thread.start()
+        self.shim()
+        #_thread = threading.Thread(target=self.shim)
+        #_thread.start()
