@@ -1,5 +1,5 @@
 import threading
-import websocket-client
+import websocket
 import time
 import asyncio
 import json
@@ -24,7 +24,7 @@ class SessionManager:
       #         # print("pinging")
       #         await asyncio.sleep(10)
       #         await websocket.send('2')
-          self._ws = websockets.WebSocketApp("ws://%s:%i" % (self._ip, self._port), on_message = self.on_message, on_error = self.on_error, on_close = self.on_close)
+          self._ws = websocket.WebSocketApp("ws://%s:%i" % (self._ip, self._port), on_message = self.on_message, on_error = self.on_error, on_close = self.on_close)
 
           self._ws.on_open = self.on_open
 
