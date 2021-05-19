@@ -18,7 +18,7 @@ class BaseCommand:
             self._radamsa_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..\\utils\\radamsa.exe')
 
         print(self._radamsa_path)
-        sys._exit("hey")
+        sys.exit("hey")
         self._init_websocket = Template(
             name="init_websocket",
             fields=[
