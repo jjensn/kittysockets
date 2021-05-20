@@ -107,7 +107,7 @@ class SessionServerController(BaseController):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(1)
             s.connect((self._host, self._port))
-            s.send("GET / HTTP/1.1\r\nHost: wss.plc-gc.com:9700\r\nSec-WebSocket-Version: 13\r\nSec-WebSocket-Key: Pi2r1NMQ1ukNtA/TDvSVtQ==\r\nConnection: keep-alive, Upgrade\r\nUpgrade: websocket\r\n\r\n")
+            s.send(b'GET / HTTP/1.1\r\nHost: wss.plc-gc.com:9700\r\nSec-WebSocket-Version: 13\r\nSec-WebSocket-Key: Pi2r1NMQ1ukNtA/TDvSVtQ==\r\nConnection: keep-alive, Upgrade\r\nUpgrade: websocket\r\n\r\n')
             s.recv(1000)
             s.close()
             self._active = True
