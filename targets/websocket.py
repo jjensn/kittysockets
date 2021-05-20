@@ -106,11 +106,11 @@ class WebsocketTarget(TcpTarget):
 
     def _receive_from_target(self):
         try:
-            return self.socket.recv(10000)
+            return self.socket.recv(20000)
         except socket.timeout:
             self.logger.error('Socket timed out!')
-            self.socket.shutdown(socket.SHUT_RDWR)
-            self.socket = None
+            #self.socket.shutdown(socket.SHUT_RDWR)
+            #self.socket = None
             
             return b'{}'
         except Exception as e:
