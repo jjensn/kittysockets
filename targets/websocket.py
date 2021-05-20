@@ -108,7 +108,8 @@ class WebsocketTarget(TcpTarget):
             return self.socket.recv(10000)
         except socket.timeout:
             self.logger.error('Socket timed out!')
-            self.socket.shutdown(socket.SHUT_RDWR)
+            self.socket.close()
+            self.controller._restart_target()
             self.socket = None
             return b'{}'
         except Exception as e:
