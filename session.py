@@ -28,12 +28,12 @@ class SessionManager:
     def on_error(self, ws, error):
         self._session_id = None
         print(error)
-        sys.exit("ON ERROR")
+        # sys.exit("ON ERROR")
 
     def on_close(self, ws):
         self._session_id = None
         print("### closed ###")
-        sys.exit("ON CLOSE")
+        # sys.exit("ON CLOSE")
 
     def on_open(self, ws):
         def run(*args):
