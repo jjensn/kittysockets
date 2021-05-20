@@ -19,7 +19,7 @@ target_ip = "127.0.0.1"
 target_port = 9700
 web_port = 26001
 
-session_mgr = SessionManager(target_ip, target_port)
+session_mgr = None # SessionManager(target_ip, target_port)
 # Make target expect response
 
 # def set_var(fuzzer, edge, resp):

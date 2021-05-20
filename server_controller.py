@@ -56,10 +56,10 @@ class SessionServerController(BaseController):
 
         if not self.is_victim_alive():
             self._restart_target()
-            self._session_mgr.start()
-            while not self._session_mgr._session_id:
-                time.sleep(1)
-                print("Waiting to get a session ID")
+            # self._session_mgr.start()
+            # while not self._session_mgr._session_id:
+            #    time.sleep(1)
+            #    print("Waiting to get a session ID")
         if not self.is_victim_alive():
             msg = 'Controller cannot start target'
             raise Exception(msg)
