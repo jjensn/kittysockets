@@ -36,7 +36,7 @@ cmdfuzz.finalize()
 
 # Define session target
 target = WebsocketTarget(
-    name="session_test_target", host=target_ip, port=target_port, timeout=2
+    name="session_test_target", host=target_ip, port=target_port, timeout=5
 )
 target.set_expect_response(True)
 # Define controller
