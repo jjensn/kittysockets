@@ -23,7 +23,7 @@ class SetUserID(BaseCommand):
                     value='","command":"SET_USER_ID", "params":["user_id"],"values":[',
                     fuzzable=False,
                 ),
-                RadamsaField(value=b'"9687498355"', fuzz_count=5000, bin_path=self._radamsa_path, encoder=ENC_BITS_DEFAULT),
+                RadamsaField(value=b'"9687498355"', fuzz_count=5000, bin_path=self._radamsa_path),
                 String(value="]}}", fuzzable=False),
             ],
             encoder=WEBSOCKET_BITS,
