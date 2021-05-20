@@ -84,6 +84,7 @@ class WebsocketTarget(TcpTarget):
     def _send_to_target(self, data):
         if not self.socket:
             self.logger.info("Socket was none. Might have been an error? Recreating...")
+            self.controller._restart_target()
             retry_count = 0
             while self.socket is None and retry_count < self.max_retries:
                 sock = self._get_socket()
@@ -110,7 +111,7 @@ class WebsocketTarget(TcpTarget):
             self.logger.error('Socket timed out!')
             self.socket.shutdown(socket.SHUT_RDWR)
             self.socket = None
-            self.controller._restart_target()
+            
             return b'{}'
         except Exception as e:
             raise(e)
