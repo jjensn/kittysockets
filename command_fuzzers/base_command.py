@@ -58,6 +58,21 @@ class BaseCommand:
             ],encoder=WEBSOCKET_PING
         )
 
+        self._static_user_id = Template(
+            name="set_user_id",
+            fields=[
+                String(value='{"execute_command":{"session":"', fuzzable=False),
+                Dynamic(key="session_id", default_value="AAAA"),
+                String(
+                    value='","command":"SET_USER_ID", "params":["user_id"],"values":[',
+                    fuzzable=False,
+                ),
+                String(value='9687498355', fuzzable=False),
+                String(value="]}}", fuzzable=False),
+            ],
+            encoder=WEBSOCKET_BITS,
+        )
+
         self._model = model
 
         self._model.connect(self._init_websocket)

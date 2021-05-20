@@ -19,7 +19,7 @@ import socket
 import time
 # import traceback
 from katnip.targets.tcp import TcpTarget
-
+from kitty.core import KittyException
 
 class WebsocketTarget(TcpTarget):
     '''
@@ -82,11 +82,26 @@ class WebsocketTarget(TcpTarget):
     #     super(TcpTarget, self).post_test(test_num)
 
     def _send_to_target(self, data):
-        #print("sending data")
-        self.socket.send(data)
-        #print("sent")
-        # 
+        if not self.socket:
+            self.logger.info("Socket was none. Might have been an error? Recreating...")
+            retry_count = 0
+            while self.socket is None and retry_count < self.max_retries:
+                sock = self._get_socket()
+                if self.timeout is not None:
+                    sock.settimeout(self.timeout)
+                try:
+                    retry_count += 1
+                    sock.connect((self.host, self.port))
+                    self.socket = sock
+                except Exception:
+                    sock.close()
+                    # self.logger.error('Error: %s' % traceback.format_exc())
+                    self.logger.error('Failed to connect to target server, retrying...')
+                    time.sleep(1)
+            if self.socket is None:
+                raise(KittyException('TCPTarget: (pre_test) cannot connect to server (retries = %d' % retry_count))
 
+        self.socket.send(data)
 
     def _receive_from_target(self):
         try:

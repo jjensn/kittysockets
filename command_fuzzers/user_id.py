@@ -23,7 +23,7 @@ class SetUserID(BaseCommand):
                     value='","command":"SET_USER_ID", "params":["user_id"],"values":[',
                     fuzzable=False,
                 ),
-                RadamsaField(value=b'"9687498355"', fuzz_count=5000, bin_path=self._radamsa_path),
+                RadamsaField(value=b'"9687498355"', fuzz_count=5000, bin_path=self._radamsa_path, encoder=ENC_BITS_DEFAULT),
                 String(value="]}}", fuzzable=False),
             ],
             encoder=WEBSOCKET_BITS,
@@ -46,14 +46,6 @@ class SetUserID(BaseCommand):
             encoder=WEBSOCKET_BITS,
         )
 
-    def case_2(self):
-        self._target_template = Template(
-            name="user_id_from_json",
-            encoder=WEBSOCKET_BITS,
-            fields=[
-                str_to_json('{"execute_command":{"session":"')
-            ]
-        )
     def finalize(self):
         self._model.connect(self._ping, self._target_template)
         #self._model.connect(self._init_websocket, self._target_template)
