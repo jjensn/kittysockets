@@ -114,4 +114,5 @@ class WebsocketTarget(TcpTarget):
             
             return b'{}'
         except Exception as e:
-            raise(e)
+            self.controller._restart_target()
+            return b'{}'
