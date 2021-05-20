@@ -29,11 +29,15 @@ class GenericCommand(BaseCommand):
                     fuzzable=False,
                 ),
                 OneOf(fields=[
-                    String(value="SET_USER_ID", encoder=ENC_BITS_DEFAULT),
+                    String(value='SET_USER_ID'),
+                    RadamsaField(value=b'SET_USER_ID', fuzz_count=5000, bin_path=self._radamsa_path),
                 ], encoder=ENC_BITS_DEFAULT),
-                # SET_USER_ID", "params":["user_id"],"values":['
-                # RadamsaField(value=b'9687498355', fuzz_count=5000, bin_path=self._radamsa_path),
-                String(value="]}}", fuzzable=False),
+                
+                String(value='", "params":["', fuzzable=False),
+                String(value='user_id'),
+                String(value='"],"values":["', fuzzable=False),
+                String(values='9687498355'),
+                String(value='"]}}', fuzzable=False),
             ],
             encoder=WEBSOCKET_BITS,
         )

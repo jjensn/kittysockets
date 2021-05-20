@@ -30,12 +30,9 @@ session_mgr = SessionManager(target_ip, target_port)
 # Define model
 model = GraphModel()
 cmdfuzz = SetUserID(model)
+# cmdfuzz = GenericCommand(model)
 cmdfuzz.case_1()
 cmdfuzz.finalize()
-#model.connect(cmdfuzz._init_websocket)
-#model.connect(cmdfuzz._init_websocket, cmdfuzz._target_template, set_var)
-# model.connect(init_handshake, user_id_fuzz, new_session_callback)
-
 
 # Define session target
 target = WebsocketTarget(
@@ -54,6 +51,7 @@ fuzzer.set_interface(WebInterface(port=web_port))
 fuzzer.set_model(model)
 fuzzer.set_target(target)
 fuzzer.set_delay_between_tests(0.2)
+# fuzzer.set_delay_between_tests(30)
 
 fuzzer.start()
 
